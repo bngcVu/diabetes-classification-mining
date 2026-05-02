@@ -1,0 +1,9 @@
+{
+  "rows": 253680,
+  "raw_columns": 22,
+  "feature_columns_after_engineering": 24,
+  "test_size": 0.2,
+  "random_state": 42,
+  "fast_mode": false,
+  "duration_seconds": 37.94
+}

@@ -1,0 +1,276 @@
+{
+  "random_forest": [
+    {
+      "feature": "comorbidity_score",
+      "feature_vi": "Điểm bệnh đi kèm",
+      "importance": 0.15390396796355393
+    },
+    {
+      "feature": "GenHlth",
+      "feature_vi": "Sức khỏe tổng quát",
+      "importance": 0.1437888253720327
+    },
+    {
+      "feature": "BMI",
+      "feature_vi": "Chỉ số BMI",
+      "importance": 0.10103522199452128
+    },
+    {
+      "feature": "Age",
+      "feature_vi": "Nhóm tuổi",
+      "importance": 0.09565396271303864
+    },
+    {
+      "feature": "HighBP",
+      "feature_vi": "Huyết áp cao",
+      "importance": 0.07990551619232666
+    },
+    {
+      "feature": "Income",
+      "feature_vi": "Thu nhập",
+      "importance": 0.0492212568406588
+    },
+    {
+      "feature": "PhysHlth",
+      "feature_vi": "Sức khỏe thể chất",
+      "importance": 0.04340997846040681
+    },
+    {
+      "feature": "HighChol",
+      "feature_vi": "Cholesterol cao",
+      "importance": 0.043116712614983455
+    },
+    {
+      "feature": "MentHlth",
+      "feature_vi": "Sức khỏe tinh thần",
+      "importance": 0.03449408211637434
+    },
+    {
+      "feature": "Education",
+      "feature_vi": "Học vấn",
+      "importance": 0.031030083236733348
+    },
+    {
+      "feature": "DiffWalk",
+      "feature_vi": "Khó đi lại",
+      "importance": 0.03059847701008465
+    },
+    {
+      "feature": "BMI_category_obese",
+      "feature_vi": "Chỉ số BMI_category_obese",
+      "importance": 0.028682232562433647
+    },
+    {
+      "feature": "healthy_lifestyle",
+      "feature_vi": "Lối sống lành mạnh",
+      "importance": 0.028092702018765087
+    },
+    {
+      "feature": "BMI_category_normal",
+      "feature_vi": "Chỉ số BMI_category_normal",
+      "importance": 0.017418390148354522
+    },
+    {
+      "feature": "Sex",
+      "feature_vi": "Giới tính",
+      "importance": 0.016305881564676918
+    },
+    {
+      "feature": "HeartDiseaseorAttack",
+      "feature_vi": "Bệnh tim",
+      "importance": 0.012850410276505238
+    },
+    {
+      "feature": "Smoker",
+      "feature_vi": "Hút thuốc",
+      "importance": 0.012440944778315222
+    },
+    {
+      "feature": "Fruits",
+      "feature_vi": "Ăn trái cây",
+      "importance": 0.012171812084918437
+    },
+    {
+      "feature": "PhysActivity",
+      "feature_vi": "Hoạt động thể chất",
+      "importance": 0.011983970303031475
+    },
+    {
+      "feature": "Veggies",
+      "feature_vi": "Ăn rau",
+      "importance": 0.010533487285125476
+    },
+    {
+      "feature": "HvyAlcoholConsump",
+      "feature_vi": "Uống rượu nhiều",
+      "importance": 0.009447774201772454
+    },
+    {
+      "feature": "NoDocbcCost",
+      "feature_vi": "Không khám vì chi phí",
+      "importance": 0.00802797861462997
+    },
+    {
+      "feature": "BMI_category_overweight",
+      "feature_vi": "Chỉ số BMI_category_overweight",
+      "importance": 0.007582242899320547
+    },
+    {
+      "feature": "CholCheck",
+      "feature_vi": "Kiểm tra Cholesterol",
+      "importance": 0.006498753218967651
+    },
+    {
+      "feature": "AnyHealthcare",
+      "feature_vi": "Có bảo hiểm y tế",
+      "importance": 0.005546898587798167
+    },
+    {
+      "feature": "Stroke",
+      "feature_vi": "Đột quỵ",
+      "importance": 0.005058621422177175
+    },
+    {
+      "feature": "BMI_category_underweight",
+      "feature_vi": "Chỉ số BMI_category_underweight",
+      "importance": 0.0011998155184933857
+    }
+  ],
+  "xgboost": [
+    {
+      "feature": "comorbidity_score",
+      "feature_vi": "Điểm bệnh đi kèm",
+      "importance": 0.3151823878288269
+    },
+    {
+      "feature": "HighBP",
+      "feature_vi": "Huyết áp cao",
+      "importance": 0.2732173800468445
+    },
+    {
+      "feature": "BMI_category_obese",
+      "feature_vi": "Chỉ số BMI_category_obese",
+      "importance": 0.09918171912431717
+    },
+    {
+      "feature": "GenHlth",
+      "feature_vi": "Sức khỏe tổng quát",
+      "importance": 0.090597003698349
+    },
+    {
+      "feature": "BMI_category_normal",
+      "feature_vi": "Chỉ số BMI_category_normal",
+      "importance": 0.035060036927461624
+    },
+    {
+      "feature": "Age",
+      "feature_vi": "Nhóm tuổi",
+      "importance": 0.02765316143631935
+    },
+    {
+      "feature": "BMI",
+      "feature_vi": "Chỉ số BMI",
+      "importance": 0.026983827352523804
+    },
+    {
+      "feature": "HvyAlcoholConsump",
+      "feature_vi": "Uống rượu nhiều",
+      "importance": 0.02048310823738575
+    },
+    {
+      "feature": "BMI_category_overweight",
+      "feature_vi": "Chỉ số BMI_category_overweight",
+      "importance": 0.019104788079857826
+    },
+    {
+      "feature": "CholCheck",
+      "feature_vi": "Kiểm tra Cholesterol",
+      "importance": 0.01718376949429512
+    },
+    {
+      "feature": "Income",
+      "feature_vi": "Thu nhập",
+      "importance": 0.012618198990821838
+    },
+    {
+      "feature": "Sex",
+      "feature_vi": "Giới tính",
+      "importance": 0.011440285481512547
+    },
+    {
+      "feature": "HighChol",
+      "feature_vi": "Cholesterol cao",
+      "importance": 0.00897760409861803
+    },
+    {
+      "feature": "HeartDiseaseorAttack",
+      "feature_vi": "Bệnh tim",
+      "importance": 0.004707323387265205
+    },
+    {
+      "feature": "DiffWalk",
+      "feature_vi": "Khó đi lại",
+      "importance": 0.004513029009103775
+    },
+    {
+      "feature": "MentHlth",
+      "feature_vi": "Sức khỏe tinh thần",
+      "importance": 0.004274993669241667
+    },
+    {
+      "feature": "Education",
+      "feature_vi": "Học vấn",
+      "importance": 0.003947987221181393
+    },
+    {
+      "feature": "healthy_lifestyle",
+      "feature_vi": "Lối sống lành mạnh",
+      "importance": 0.0033015699591487646
+    },
+    {
+      "feature": "Smoker",
+      "feature_vi": "Hút thuốc",
+      "importance": 0.0030888221226632595
+    },
+    {
+      "feature": "PhysHlth",
+      "feature_vi": "Sức khỏe thể chất",
+      "importance": 0.003026467515155673
+    },
+    {
+      "feature": "Fruits",
+      "feature_vi": "Ăn trái cây",
+      "importance": 0.0026423560921102762
+    },
+    {
+      "feature": "Stroke",
+      "feature_vi": "Đột quỵ",
+      "importance": 0.00236205174587667
+    },
+    {
+      "feature": "AnyHealthcare",
+      "feature_vi": "Có bảo hiểm y tế",
+      "importance": 0.0022235028445720673
+    },
+    {
+      "feature": "PhysActivity",
+      "feature_vi": "Hoạt động thể chất",
+      "importance": 0.00220772554166615
+    },
+    {
+      "feature": "BMI_category_underweight",
+      "feature_vi": "Chỉ số BMI_category_underweight",
+      "importance": 0.002054537646472454
+    },
+    {
+      "feature": "NoDocbcCost",
+      "feature_vi": "Không khám vì chi phí",
+      "importance": 0.0019942547660320997
+    },
+    {
+      "feature": "Veggies",
+      "feature_vi": "Ăn rau",
+      "importance": 0.0019720755517482758
+    }
+  ]
+}

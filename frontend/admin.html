@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Quản lý dữ liệu & Retrain</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <main class="app-shell admin-shell">
+      <header class="app-header">
+        <div>
+          <h1>Quản lý dữ liệu & Retrain</h1>
+          <p>Theo dõi dữ liệu mới, huấn luyện lại 3 model và quyết định cập nhật.</p>
+        </div>
+        <div class="header-actions">
+          <span id="apiStatus" class="api-status">Backend: đang kiểm tra...</span>
+          <nav class="page-nav">
+            <a href="index.html" class="nav-link">Dự đoán</a>
+            <a href="charts.html" class="nav-link">Biểu đồ</a>
+            <a href="admin.html" class="nav-link active">Admin</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="admin-grid metrics-overview">
+        <article class="summary-card">
+          <span class="summary-value" id="totalOriginal">-</span>
+          <span class="summary-label">Dữ liệu gốc CDC</span>
+        </article>
+        <article class="summary-card">
+          <span class="summary-value" id="totalNew">-</span>
+          <span class="summary-label">Dữ liệu mới thu thập</span>
+        </article>
+        <article class="summary-card success">
+          <span class="summary-value" id="totalCombined">-</span>
+          <span class="summary-label">Tổng dữ liệu nếu gộp</span>
+        </article>
+        <article class="summary-card">
+          <span class="summary-value compact" id="lastRetrain">-</span>
+          <span class="summary-label">Lần retrain gần nhất</span>
+        </article>
+      </section>
+
+      <section class="admin-grid">
+        <section class="panel">
+          <div class="section-title">
+            <h2>Dữ liệu tích lũy theo ngày</h2>
+          </div>
+          <div class="chart-wrap admin-chart">
+            <canvas id="dailyChart"></canvas>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-title">
+            <h2>Phân phối nhãn dữ liệu mới</h2>
+          </div>
+          <div class="class-split">
+            <div>
+              <span class="class-label">Class 0</span>
+              <strong id="classZero">0%</strong>
+              <div class="class-bar"><span id="classZeroBar"></span></div>
+            </div>
+            <div>
+              <span class="class-label">Class 1</span>
+              <strong id="classOne">0%</strong>
+              <div class="class-bar"><span id="classOneBar"></span></div>
+            </div>
+          </div>
+          <p class="muted-note" id="classHint">Chưa có dữ liệu nhãn để đánh giá cân bằng.</p>
+        </section>
+      </section>
+
+      <section class="admin-grid">
+        <section class="panel">
+          <div class="section-title">
+            <h2>Upload CSV có nhãn</h2>
+          </div>
+          <form id="uploadForm" class="upload-panel">
+            <label class="upload-area" id="csvDropZone">
+              <input type="file" id="csvInput" accept=".csv" hidden />
+              <span class="upload-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </span>
+              <span class="upload-text">Kéo thả CSV hoặc click để chọn</span>
+              <span class="upload-hint">Cần đủ 21 feature và cột Diabetes_binary</span>
+            </label>
+            <div id="fileInfo" class="file-info" hidden>
+              <span id="fileName"></span>
+              <span id="fileRows"></span>
+            </div>
+            <button id="uploadBtn" type="submit" class="primary-button primary-warning" disabled>Thêm vào dữ liệu mới</button>
+            <p id="uploadMessage" class="success-message" hidden></p>
+            <p id="uploadError" class="error-message" hidden></p>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="section-title">
+            <h2>Kích hoạt Retrain</h2>
+          </div>
+          <div class="condition-list" id="conditionList"></div>
+          <button id="retrainBtn" class="primary-button">Bắt đầu Retrain</button>
+          <p class="muted-note" id="retrainHint">Khuyến nghị retrain khi dữ liệu mới đủ lớn và có đủ 2 class.</p>
+
+          <div id="progressBlock" class="retrain-progress admin-progress" hidden>
+            <div class="progress-step" data-step="merge"><span class="step-icon">1</span><span class="step-text">Đang gộp dữ liệu cũ + mới...</span></div>
+            <div class="progress-step" data-step="preprocess"><span class="step-icon">2</span><span class="step-text">Đang tiền xử lý dữ liệu...</span></div>
+            <div class="progress-step" data-step="lr"><span class="step-icon">3</span><span class="step-text">Đang train Logistic Regression...</span></div>
+            <div class="progress-step" data-step="rf"><span class="step-icon">4</span><span class="step-text">Đang train Random Forest...</span></div>
+            <div class="progress-step" data-step="xgb"><span class="step-icon">5</span><span class="step-text">Đang train XGBoost...</span></div>
+            <div class="progress-step" data-step="eval"><span class="step-icon">6</span><span class="step-text">Đang đánh giá trên cùng tập test...</span></div>
+            <div class="progress-step" data-step="done"><span class="step-icon">7</span><span class="step-text" id="doneStepText">Hoàn tất</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel" id="comparisonPanel" hidden>
+        <div class="section-title">
+          <h2>So sánh Model cũ vs Model mới</h2>
+        </div>
+        <div id="comparisonTables" class="model-comparison-list"></div>
+        <div id="decisionSummary" class="decision-summary"></div>
+        <div class="decision-actions">
+          <button id="applyBtn" class="primary-button">Cập nhật Model Mới</button>
+          <button id="keepOldBtn" class="secondary-button">Giữ Model Cũ</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <h2>Lịch sử Retrain</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Lần</th>
+                <th>Ngày</th>
+                <th>Mẫu mới</th>
+                <th>ROC-AUC cũ</th>
+                <th>ROC-AUC mới</th>
+                <th>Quyết định</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

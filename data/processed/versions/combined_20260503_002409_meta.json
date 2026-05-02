@@ -1,0 +1,32 @@
+{
+  "filename": "combined_20260503_002409.csv",
+  "rows": 203044,
+  "columns": [
+    "HighBP",
+    "HighChol",
+    "CholCheck",
+    "BMI",
+    "Smoker",
+    "Stroke",
+    "HeartDiseaseorAttack",
+    "PhysActivity",
+    "Fruits",
+    "Veggies",
+    "HvyAlcoholConsump",
+    "AnyHealthcare",
+    "NoDocbcCost",
+    "GenHlth",
+    "MentHlth",
+    "PhysHlth",
+    "DiffWalk",
+    "Sex",
+    "Age",
+    "Education",
+    "Income",
+    "BMI_category",
+    "comorbidity_score",
+    "healthy_lifestyle",
+    "Diabetes_binary"
+  ],
+  "saved_at": "20260503_002409"
+}

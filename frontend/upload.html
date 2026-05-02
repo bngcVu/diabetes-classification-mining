@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Huấn luyện lại - Dự đoán nguy cơ tiểu đường</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <h1>Huấn luyện lại mô hình</h1>
+          <p>Tải file CSV có nhãn để cập nhật mô hình dự đoán.</p>
+        </div>
+        <nav class="page-nav">
+          <a href="index.html" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            Trang dự đoán
+          </a>
+          <a href="admin.html" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Admin
+          </a>
+          <a href="charts.html" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            Biểu đồ
+          </a>
+        </nav>
+      </header>
+
+      <section class="workspace upload-workspace">
+        <!-- Upload Panel -->
+        <section class="panel upload-panel">
+          <div class="section-title">
+            <h2>Tải lên file CSV</h2>
+          </div>
+
+          <div class="retrain-info">
+            <h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Lưu ý:
+            </h3>
+            <ul>
+              <li>File CSV phải có cột <strong>Diabetes_binary</strong> (0 hoặc 1)</li>
+              <li>Dữ liệu mới sẽ được kiểm tra, làm sạch và gộp với dữ liệu hiện có</li>
+              <li>Model mới sẽ được so sánh với model cũ trước khi triển khai</li>
+              <li>Nếu model mới tốt hơn → tự động cập nhật</li>
+            </ul>
+          </div>
+
+          <form id="retrainForm">
+            <label class="upload-area" id="retrainDropZone">
+              <input type="file" id="retrainFileInput" accept=".csv" hidden />
+              <span class="upload-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </span>
+              <span class="upload-text">Kéo thả file CSV vào đây hoặc click để chọn</span>
+              <span class="upload-hint">File cần có cột Diabetes_binary (0/1) và các cột đặc trưng</span>
+            </label>
+
+            <div id="retrainFileInfo" class="file-info" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+              <span id="retrainFileName"></span>
+              <span id="retrainFileRows"></span>
+            </div>
+
+            <button type="submit" class="primary-button primary-warning" id="retrainSubmitBtn" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+              Upload và Huấn luyện lại Model
+            </button>
+          </form>
+
+          <p id="formError" class="error-message" hidden></p>
+          <p id="formSuccess" class="success-message" hidden></p>
+        </section>
+
+        <!-- Results Panel -->
+        <section class="panel result-panel" id="resultPanel" hidden>
+          <div class="section-title">
+            <h2>Kết quả huấn luyện</h2>
+          </div>
+
+          <div id="retrainResults" class="results-section">
+            <div id="retrainProgress">
+              <div class="progress-step completed">
+                <span class="step-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span class="step-text">Upload file</span>
+              </div>
+              <div class="progress-step" id="stepValidate">
+                <span class="step-icon">2</span>
+                <span class="step-text">Kiểm tra dữ liệu</span>
+              </div>
+              <div class="progress-step" id="stepClean">
+                <span class="step-icon">3</span>
+                <span class="step-text">Làm sạch dữ liệu</span>
+              </div>
+              <div class="progress-step" id="stepMerge">
+                <span class="step-icon">4</span>
+                <span class="step-text">Gộp dữ liệu</span>
+              </div>
+              <div class="progress-step" id="stepTrain">
+                <span class="step-icon">5</span>
+                <span class="step-text">Huấn luyện model</span>
+              </div>
+              <div class="progress-step" id="stepCompare">
+                <span class="step-icon">6</span>
+                <span class="step-text">So sánh & Deploy</span>
+              </div>
+            </div>
+
+            <div id="retrainSummary" hidden>
+              <div class="retrain-status-card" id="retrainStatusCard">
+                <h3 id="retrainStatusTitle">Đang xử lý...</h3>
+                <p id="retrainStatusMessage"></p>
+              </div>
+
+              <div id="retrainDetails" class="retrain-details" hidden>
+                <h4>Kết quả so sánh</h4>
+                <div id="comparisonTable" class="comparison-table"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Format Info -->
+      <section class="panel format-panel">
+        <div class="section-title">
+          <h2>Định dạng file CSV</h2>
+        </div>
+        <p>File CSV cần có các cột sau (không phân biệt thứ tự):</p>
+        <div class="columns-grid">
+          <div class="column-group">
+            <h3>Nhị phân (0 hoặc 1)</h3>
+            <code>HighBP, HighChol, CholCheck, Smoker, Stroke, HeartDiseaseorAttack, PhysActivity, Fruits, Veggies, HvyAlcoholConsump, AnyHealthcare, NoDocbcCost, DiffWalk, Sex</code>
+          </div>
+          <div class="column-group">
+            <h3>Số (numeric)</h3>
+            <code>BMI, MentHlth, PhysHlth</code>
+          </div>
+          <div class="column-group">
+            <h3>Thứ tự (ordinal)</h3>
+            <code>GenHlth (1-5), Age (1-13), Education (1-6), Income (1-8)</code>
+          </div>
+          <div class="column-group">
+            <h3>Nhãn (target)</h3>
+            <code>Diabetes_binary (0 = không tiểu đường, 1 = tiểu đường)</code>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="upload.js"></script>
+  </body>
+</html>

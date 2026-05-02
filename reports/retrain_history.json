@@ -1,0 +1,246 @@
+[
+  {
+    "id": 1,
+    "created_at": "2026-05-03T01:28:21.561865",
+    "decision": "kept_old",
+    "new_rows": 203145,
+    "total_rows": 203145,
+    "old_roc_auc": 0.8323117978014798,
+    "new_roc_auc": 0.8285403798508995,
+    "comparison": {
+      "logistic_regression": {
+        "accuracy": {
+          "old": 0.730094,
+          "new": 0.729873,
+          "diff": -0.000222,
+          "percent_change": -0.03,
+          "improved": false
+        },
+        "precision": {
+          "old": 0.311059,
+          "new": 0.310967,
+          "diff": -9.2e-05,
+          "percent_change": -0.03,
+          "improved": false
+        },
+        "recall": {
+          "old": 0.768024,
+          "new": 0.768729,
+          "diff": 0.000705,
+          "percent_change": 0.09,
+          "improved": true
+        },
+        "f1": {
+          "old": 0.442785,
+          "new": 0.442809,
+          "diff": 2.4e-05,
+          "percent_change": 0.01,
+          "improved": true
+        },
+        "roc_auc": {
+          "old": 0.823176,
+          "new": 0.822987,
+          "diff": -0.000189,
+          "percent_change": -0.02,
+          "improved": false
+        }
+      },
+      "random_forest": {
+        "accuracy": {
+          "old": 0.840533,
+          "new": 0.794186,
+          "diff": -0.046346,
+          "percent_change": -5.51,
+          "improved": false
+        },
+        "precision": {
+          "old": 0.461546,
+          "new": 0.362624,
+          "diff": -0.098922,
+          "percent_change": -21.43,
+          "improved": false
+        },
+        "recall": {
+          "old": 0.852635,
+          "new": 0.625595,
+          "diff": -0.22704,
+          "percent_change": -26.63,
+          "improved": false
+        },
+        "f1": {
+          "old": 0.598898,
+          "new": 0.45912,
+          "diff": -0.139778,
+          "percent_change": -23.34,
+          "improved": false
+        },
+        "roc_auc": {
+          "old": 0.919712,
+          "new": 0.819216,
+          "diff": -0.100496,
+          "percent_change": -10.93,
+          "improved": false
+        }
+      },
+      "xgboost": {
+        "accuracy": {
+          "old": 0.72212,
+          "new": 0.719092,
+          "diff": -0.003027,
+          "percent_change": -0.42,
+          "improved": false
+        },
+        "precision": {
+          "old": 0.308333,
+          "new": 0.305292,
+          "diff": -0.003041,
+          "percent_change": -0.99,
+          "improved": false
+        },
+        "recall": {
+          "old": 0.796404,
+          "new": 0.793231,
+          "diff": -0.003173,
+          "percent_change": -0.4,
+          "improved": false
+        },
+        "f1": {
+          "old": 0.444554,
+          "new": 0.440896,
+          "diff": -0.003658,
+          "percent_change": -0.82,
+          "improved": false
+        },
+        "roc_auc": {
+          "old": 0.832312,
+          "new": 0.82854,
+          "diff": -0.003771,
+          "percent_change": -0.45,
+          "improved": false
+        }
+      }
+    }
+  },
+  {
+    "id": 2,
+    "created_at": "2026-05-03T01:33:11.079009",
+    "decision": "kept_old",
+    "new_rows": 207069,
+    "total_rows": 207069,
+    "old_roc_auc": 0.8141551899960068,
+    "new_roc_auc": 0.8237719907968934,
+    "comparison": {
+      "logistic_regression": {
+        "accuracy": {
+          "old": 0.727025,
+          "new": 0.723765,
+          "diff": -0.00326,
+          "percent_change": -0.45,
+          "improved": false
+        },
+        "precision": {
+          "old": 0.317298,
+          "new": 0.31439,
+          "diff": -0.002907,
+          "percent_change": -0.92,
+          "improved": false
+        },
+        "recall": {
+          "old": 0.750495,
+          "new": 0.750825,
+          "diff": 0.00033,
+          "percent_change": 0.04,
+          "improved": true
+        },
+        "f1": {
+          "old": 0.446023,
+          "new": 0.443201,
+          "diff": -0.002823,
+          "percent_change": -0.63,
+          "improved": false
+        },
+        "roc_auc": {
+          "old": 0.804823,
+          "new": 0.804968,
+          "diff": 0.000145,
+          "percent_change": 0.02,
+          "improved": true
+        }
+      },
+      "random_forest": {
+        "accuracy": {
+          "old": 0.83549,
+          "new": 0.79181,
+          "diff": -0.043681,
+          "percent_change": -5.23,
+          "improved": false
+        },
+        "precision": {
+          "old": 0.465462,
+          "new": 0.373467,
+          "diff": -0.091995,
+          "percent_change": -19.76,
+          "improved": false
+        },
+        "recall": {
+          "old": 0.832289,
+          "new": 0.622526,
+          "diff": -0.209763,
+          "percent_change": -25.2,
+          "improved": false
+        },
+        "f1": {
+          "old": 0.597031,
+          "new": 0.466856,
+          "diff": -0.130175,
+          "percent_change": -21.8,
+          "improved": false
+        },
+        "roc_auc": {
+          "old": 0.895313,
+          "new": 0.817686,
+          "diff": -0.077627,
+          "percent_change": -8.67,
+          "improved": false
+        }
+      },
+      "xgboost": {
+        "accuracy": {
+          "old": 0.719443,
+          "new": 0.730115,
+          "diff": 0.010673,
+          "percent_change": 1.48,
+          "improved": true
+        },
+        "precision": {
+          "old": 0.31524,
+          "new": 0.323263,
+          "diff": 0.008023,
+          "percent_change": 2.55,
+          "improved": true
+        },
+        "recall": {
+          "old": 0.781497,
+          "new": 0.771108,
+          "diff": -0.010389,
+          "percent_change": -1.33,
+          "improved": false
+        },
+        "f1": {
+          "old": 0.449258,
+          "new": 0.455551,
+          "diff": 0.006292,
+          "percent_change": 1.4,
+          "improved": true
+        },
+        "roc_auc": {
+          "old": 0.814155,
+          "new": 0.823772,
+          "diff": 0.009617,
+          "percent_change": 1.18,
+          "improved": true
+        }
+      }
+    }
+  }
+]

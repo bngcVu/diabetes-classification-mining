@@ -1,0 +1,62 @@
+{
+  "shape": [
+    253680,
+    22
+  ],
+  "missing_values": {
+    "Diabetes_binary": 0,
+    "HighBP": 0,
+    "HighChol": 0,
+    "CholCheck": 0,
+    "BMI": 0,
+    "Smoker": 0,
+    "Stroke": 0,
+    "HeartDiseaseorAttack": 0,
+    "PhysActivity": 0,
+    "Fruits": 0,
+    "Veggies": 0,
+    "HvyAlcoholConsump": 0,
+    "AnyHealthcare": 0,
+    "NoDocbcCost": 0,
+    "GenHlth": 0,
+    "MentHlth": 0,
+    "PhysHlth": 0,
+    "DiffWalk": 0,
+    "Sex": 0,
+    "Age": 0,
+    "Education": 0,
+    "Income": 0
+  },
+  "target_distribution": {
+    "0.0": 218334,
+    "1.0": 35346
+  },
+  "invalid_binary_values": {
+    "HighBP": [],
+    "HighChol": [],
+    "CholCheck": [],
+    "Smoker": [],
+    "Stroke": [],
+    "HeartDiseaseorAttack": [],
+    "PhysActivity": [],
+    "Fruits": [],
+    "Veggies": [],
+    "HvyAlcoholConsump": [],
+    "AnyHealthcare": [],
+    "NoDocbcCost": [],
+    "DiffWalk": [],
+    "Sex": []
+  },
+  "invalid_ordinal_counts": {
+    "GenHlth": 0,
+    "Age": 0,
+    "Education": 0,
+    "Income": 0
+  },
+  "outlier_counts": {
+    "BMI": 9847,
+    "MentHlth": 36208,
+    "PhysHlth": 40949,
+    "Age": 0
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "timestamp": "20260503_005915",
+  "log_type": "retrain_from_new_data",
+  "data_stats": {
+    "total_rows": 203144,
+    "train_rows": 162515,
+    "test_rows": 40629,
+    "new_rows": 203144
+  },
+  "cleaning_stats": {
+    "original_rows": 200,
+    "duplicates_removed": 0,
+    "nulls_filled": {},
+    "invalid_binary_filled": {},
+    "ordinal_clipped": {},
+    "outliers_clipped": {},
+    "final_rows": 200
+  },
+  "duplicate_info": {
+    "total_new_rows": 200,
+    "duplicate_rows": 0,
+    "unique_new_rows": 200,
+    "duplicate_percent": 0.0,
+    "key_columns_used": [
+      "HighBP",
+      "HighChol",
+      "CholCheck",
+      "BMI",
+      "Smoker",
+      "Stroke",
+      "HeartDiseaseorAttack",
+      "PhysActivity",
+      "Fruits",
+      "Veggies",
+      "HvyAlcoholConsump",
+      "AnyHealthcare",
+      "NoDocbcCost",
+      "GenHlth",
+      "MentHlth",
+      "PhysHlth",
+      "DiffWalk",
+      "Sex",
+      "Age",
+      "Education",
+      "Income"
+    ]
+  },
+  "comparison": {
+    "old_metrics": {
+      "model": "XGBoost",
+      "model_key": "xgboost",
+      "accuracy": 0.7230057348199562,
+      "precision": 0.30937905594644444,
+      "recall": 0.7983430283800458,
+      "f1": 0.44594328475777867,
+      "roc_auc": 0.8337525050000154,
+      "average_precision": 0.4443773655030362,
+      "confusion_matrix": [
+        [
+          24846,
+          10110
+        ],
+        [
+          1144,
+          4529
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.9559830704116968,
+          "recall": 0.7107792653621696,
+          "f1-score": 0.8153447314015686,
+          "support": 34956.0
+        },
+        "1": {
+          "precision": 0.30937905594644444,
+          "recall": 0.7983430283800458,
+          "f1-score": 0.44594328475777867,
+          "support": 5673.0
+        },
+        "accuracy": 0.7230057348199562,
+        "macro avg": {
+          "precision": 0.6326810631790707,
+          "recall": 0.7545611468711078,
+          "f1-score": 0.6306440080796736,
+          "support": 40629.0
+        },
+        "weighted avg": {
+          "precision": 0.8656981858695871,
+          "recall": 0.7230057348199562,
+          "f1-score": 0.763765455347267,
+          "support": 40629.0
+        }
+      }
+    },
+    "new_metrics": {
+      "model": "XGBoost",
+      "model_key": "xgboost",
+      "accuracy": 0.7207905683132738,
+      "precision": 0.3070169468454366,
+      "recall": 0.7951701040014102,
+      "f1": 0.4429932240007856,
+      "roc_auc": 0.829961226267841,
+      "average_precision": 0.43614569584231283,
+      "confusion_matrix": [
+        [
+          24774,
+          10182
+        ],
+        [
+          1162,
+          4511
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.955197409006786,
+          "recall": 0.7087195331273601,
+          "f1-score": 0.813702949484333,
+          "support": 34956.0
+        },
+        "1": {
+          "precision": 0.3070169468454366,
+          "recall": 0.7951701040014102,
+          "f1-score": 0.4429932240007856,
+          "support": 5673.0
+        },
+        "accuracy": 0.7207905683132738,
+        "macro avg": {
+          "precision": 0.6311071779261113,
+          "recall": 0.7519448185643851,
+          "f1-score": 0.6283480867425593,
+          "support": 40629.0
+        },
+        "weighted avg": {
+          "precision": 0.8646924061309748,
+          "recall": 0.7207905683132738,
+          "f1-score": 0.7619409993337468,
+          "support": 40629.0
+        }
+      }
+    },
+    "comparison": {
+      "accuracy": {
+        "old": 0.723006,
+        "new": 0.720791,
+        "diff": -0.002215,
+        "percent_change": -0.31,
+        "improved": false
+      },
+      "precision": {
+        "old": 0.309379,
+        "new": 0.307017,
+        "diff": -0.002362,
+        "percent_change": -0.76,
+        "improved": false
+      },
+      "recall": {
+        "old": 0.798343,
+        "new": 0.79517,
+        "diff": -0.003173,
+        "percent_change": -0.4,
+        "improved": false
+      },
+      "f1": {
+        "old": 0.445943,
+        "new": 0.442993,
+        "diff": -0.00295,
+        "percent_change": -0.66,
+        "improved": false
+      },
+      "roc_auc": {
+        "old": 0.833753,
+        "new": 0.829961,
+        "diff": -0.003791,
+        "percent_change": -0.45,
+        "improved": false
+      }
+    },
+    "improvements": {
+      "accuracy": -0.002215166506682409,
+      "precision": -0.0023621091010078143,
+      "recall": -0.0031729243786355887,
+      "f1": -0.002950060756993056,
+      "roc_auc": -0.0037912787321744412
+    },
+    "can_deploy": false,
+    "recommendation": "keep_old",
+    "decision_metrics": [
+      "roc_auc",
+      "f1",
+      "recall"
+    ],
+    "decision_summary": {
+      "same_test_set": true,
+      "model_key": "xgboost",
+      "no_metric_decreased": false,
+      "improved_metrics": [],
+      "thresholds": {
+        "roc_auc": 0.005,
+        "f1": 0.01,
+        "recall": 0.0
+      }
+    }
+  },
+  "deployed": false
+}

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dự đoán nguy cơ tiểu đường</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <h1>Dự đoán nguy cơ tiểu đường</h1>
+          <p>Nhập chỉ số sức khỏe, chọn mô hình và xem xác suất dự đoán.</p>
+        </div>
+        <nav class="page-nav">
+          <a href="index.html" class="nav-link active">Dự đoán</a>
+          <a href="charts.html" class="nav-link">Biểu đồ</a>
+          <a href="admin.html" class="nav-link">Admin</a>
+        </nav>
+      </header>
+
+      <section class="main-workspace">
+        <form id="predictionForm" class="panel form-panel">
+          <div class="section-title">
+            <h2>Nhập thông tin sức khỏe</h2>
+          </div>
+
+          <label class="full-row">
+            Mô hình sử dụng
+            <select name="model" id="modelSelect">
+              <option value="xgboost">XGBoost</option>
+              <option value="random_forest">Rừng ngẫu nhiên</option>
+              <option value="logistic_regression">Hồi quy logistic</option>
+            </select>
+          </label>
+
+          <div id="featureFields" class="feature-grid"></div>
+
+          <label class="consent-box">
+            <input type="checkbox" name="allow_save" />
+            <span>
+              <strong>Cho phép hệ thống lưu thông tin này để cải thiện mô hình dự đoán</strong>
+              <small>Dữ liệu được lưu ẩn danh, không chứa thông tin cá nhân.</small>
+            </span>
+          </label>
+
+          <button type="submit" class="primary-button">Dự đoán ngay</button>
+          <p id="formError" class="error-message" hidden></p>
+        </form>
+
+        <div class="results-column">
+          <section class="panel result-panel">
+            <div class="section-title">
+              <h2>Kết quả dự đoán</h2>
+            </div>
+
+            <div id="resultEmpty" class="empty-state">
+              <div class="empty-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+              </div>
+              <p>Nhập thông tin và nhấn "Dự đoán ngay" để xem kết quả</p>
+            </div>
+
+            <div id="resultContent" class="result-content" hidden>
+              <div class="result-main">
+                <div class="result-risk" id="resultRisk">
+                  <span id="predictionLabel">Chưa có dự đoán</span>
+                  <strong id="probabilityText">0%</strong>
+                </div>
+
+                <div class="probability-track">
+                  <div id="probabilityBar" class="probability-bar"></div>
+                </div>
+              </div>
+
+              <div class="result-info">
+                <div class="info-row">
+                  <span class="info-label">Mô hình</span>
+                  <span class="info-value" id="selectedModelText">-</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Xác suất</span>
+                  <span class="info-value" id="probabilityValue">-</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Kết quả</span>
+                  <span class="info-value" id="labelValue">-</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel metrics-panel">
+            <div class="section-title">
+              <h2>Giải thích các chỉ số đầu vào</h2>
+            </div>
+
+            <div class="feature-explanation">
+              <p class="feature-intro">Di chuột vào các mục để xem giải thích chi tiết về ý nghĩa của mỗi chỉ số sức khỏe.</p>
+              <div class="feature-cards" id="featureCards"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

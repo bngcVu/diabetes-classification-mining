@@ -1,13 +1,11 @@
 {
   "logistic_regression": {
-    "model": "Hoi quy logistic",
-    "model_key": "logistic_regression",
+    "model": "logistic_regression",
     "accuracy": 0.7323005361084831,
     "precision": 0.31244600587456084,
     "recall": 0.7674352808035083,
     "f1": 0.4440897184020956,
     "roc_auc": 0.8207723518774529,
-    "average_precision": 0.4006061240229516,
     "confusion_matrix": [
       [
         31729,
@@ -17,44 +15,15 @@
         1644,
         5425
       ]
-    ],
-    "classification_report": {
-      "0": {
-        "precision": 0.9507386210409613,
-        "recall": 0.7266127739482905,
-        "f1-score": 0.8237019730010384,
-        "support": 43667.0
-      },
-      "1": {
-        "precision": 0.31244600587456084,
-        "recall": 0.7674352808035083,
-        "f1-score": 0.4440897184020956,
-        "support": 7069.0
-      },
-      "accuracy": 0.7323005361084831,
-      "macro avg": {
-        "precision": 0.631592313457761,
-        "recall": 0.7470240273758995,
-        "f1-score": 0.633895845701567,
-        "support": 50736.0
-      },
-      "weighted avg": {
-        "precision": 0.861805900751398,
-        "recall": 0.7323005361084831,
-        "f1-score": 0.7708109483290122,
-        "support": 50736.0
-      }
-    }
+    ]
   },
   "random_forest": {
-    "model": "Rung ngau nhien",
-    "model_key": "random_forest",
+    "model": "random_forest",
     "accuracy": 0.7860099337748344,
     "precision": 0.35283605283605285,
     "recall": 0.6423822322817937,
     "f1": 0.4554892421886755,
     "roc_auc": 0.818651713319891,
-    "average_precision": 0.40563422992063847,
     "confusion_matrix": [
       [
         35338,
@@ -64,80 +33,24 @@
         2528,
         4541
       ]
-    ],
-    "classification_report": {
-      "0": {
-        "precision": 0.9332382612369936,
-        "recall": 0.8092609980076488,
-        "f1-score": 0.8668391939460096,
-        "support": 43667.0
-      },
-      "1": {
-        "precision": 0.35283605283605285,
-        "recall": 0.6423822322817937,
-        "f1-score": 0.4554892421886755,
-        "support": 7069.0
-      },
-      "accuracy": 0.7860099337748344,
-      "macro avg": {
-        "precision": 0.6430371570365232,
-        "recall": 0.7258216151447212,
-        "f1-score": 0.6611642180673425,
-        "support": 50736.0
-      },
-      "weighted avg": {
-        "precision": 0.8523713578313988,
-        "recall": 0.7860099337748344,
-        "f1-score": 0.8095261852544968,
-        "support": 50736.0
-      }
-    }
+    ]
   },
   "xgboost": {
-    "model": "XGBoost",
-    "model_key": "xgboost",
-    "accuracy": 0.7207111321349732,
-    "precision": 0.305973003989289,
-    "recall": 0.7920497948790494,
-    "f1": 0.4414222642699464,
-    "roc_auc": 0.8265821832455724,
-    "average_precision": 0.42171130891979614,
+    "model": "xgboost",
+    "accuracy": 0.719981866918953,
+    "precision": 0.30520685514681806,
+    "recall": 0.7910595558070448,
+    "f1": 0.4404710330432043,
+    "roc_auc": 0.8265758660652551,
     "confusion_matrix": [
       [
-        30967,
-        12700
+        30937,
+        12730
       ],
       [
-        1470,
-        5599
+        1477,
+        5592
       ]
-    ],
-    "classification_report": {
-      "0": {
-        "precision": 0.9546813823719826,
-        "recall": 0.7091625254769047,
-        "f1-score": 0.8138074214233154,
-        "support": 43667.0
-      },
-      "1": {
-        "precision": 0.305973003989289,
-        "recall": 0.7920497948790494,
-        "f1-score": 0.4414222642699464,
-        "support": 7069.0
-      },
-      "accuracy": 0.7207111321349732,
-      "macro avg": {
-        "precision": 0.6303271931806358,
-        "recall": 0.750606160177977,
-        "f1-score": 0.6276148428466309,
-        "support": 50736.0
-      },
-      "weighted avg": {
-        "precision": 0.8642974434176453,
-        "recall": 0.7207111321349732,
-        "f1-score": 0.761923341560552,
-        "support": 50736.0
-      }
-    }
+    ]
   }
 }

@@ -58,7 +58,8 @@ def validate_data_quality(df):
     if invalid_ordinal:
         warnings['invalid_ordinal_values'] = invalid_ordinal
     
-    # 4. Kiểm tra Outliers (IQR method)
+    # 4. Kiểm tra Outliers (IQR method) - chỉ thống kê, không cảnh báo
+    # Note: BMI được giữ lại vì đây chỉ là thống kê mô tả, không phải validation
     outlier_info = {}
     for col in ['BMI', 'MentHlth', 'PhysHlth', 'Age']:
         if col in df.columns:
@@ -131,12 +132,13 @@ def handle_invalid_values(df):
 def handle_outliers(df, strategy='cap'):
     """
     Xử lý outliers cho continuous columns.
+    Note: BMI không được xử lý vì giá trị cao (vd: 98) vẫn hợp lệ về y khoa.
     
     Args:
         strategy: 'cap' (gắn vào boundary) hoặc 'remove' (xóa row)
     """
     data = df.copy()
-    outlier_cols = ['BMI', 'MentHlth', 'PhysHlth']
+    outlier_cols = ['MentHlth', 'PhysHlth']  # BMI removed - values like 98 are valid
     removed_indices = []
     
     for col in outlier_cols:

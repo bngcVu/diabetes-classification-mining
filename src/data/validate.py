@@ -17,8 +17,9 @@ class DataValidator:
     """Validate CSV data for training/prediction."""
 
     # Outlier thresholds for continuous columns
+    # Note: BMI can range from 10-98+ in real data, no need to warn for valid medical values
     OUTLIER_THRESHOLDS = {
-        "BMI": (10, 80),
+        "BMI": (10, 120),  # Extended to 120 to include all valid BMI values in dataset
         "MentHlth": (0, 30),
         "PhysHlth": (0, 30),
     }

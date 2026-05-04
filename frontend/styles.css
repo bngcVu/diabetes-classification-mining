@@ -84,7 +84,7 @@ body {
    ======================================== */
 
 .app-shell {
-  width: min(1400px, calc(100% - 48px));
+  width: min(1600px, calc(100% - 48px));
   margin: 0 auto;
   padding: 32px 0 64px;
 }
@@ -205,7 +205,7 @@ body {
 
 .main-workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(400px, 1.1fr);
+  grid-template-columns: 1.4fr 1fr;
   gap: 24px;
   align-items: start;
 }
@@ -267,8 +267,8 @@ body {
 
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
   margin-bottom: 20px;
 }
 
@@ -283,20 +283,22 @@ label {
   font-size: 13px;
   font-weight: 500;
   color: var(--muted-dark);
+  line-height: 1.4;
 }
 
 input,
 select {
   width: 100%;
   min-height: 44px;
-  padding: 0 14px;
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
   font-family: var(--font-body);
   font-size: 14px;
   background: var(--panel);
   color: var(--text);
   transition: var(--transition);
+  line-height: 1.4;
 }
 
 input:hover,
@@ -308,7 +310,7 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15);
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12);
 }
 
 input::placeholder {
@@ -1566,10 +1568,206 @@ tr:hover td {
 }
 
 /* ========================================
+   Medical Analysis Panel
+   ======================================== */
+
+.medical-analysis {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 2px solid var(--border);
+}
+
+.medical-analysis-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.medical-analysis-header .icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.medical-analysis-header .icon-wrapper svg {
+  width: 22px;
+  height: 22px;
+}
+
+.medical-analysis-header.success .icon-wrapper {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.medical-analysis-header.success .icon-wrapper svg {
+  stroke: var(--success);
+}
+
+.medical-analysis-header.danger .icon-wrapper {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.medical-analysis-header.danger .icon-wrapper svg {
+  stroke: var(--danger);
+}
+
+.medical-analysis-header.warning .icon-wrapper {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.medical-analysis-header.warning .icon-wrapper svg {
+  stroke: var(--warning);
+}
+
+.medical-analysis-header.info .icon-wrapper {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.medical-analysis-header.info .icon-wrapper svg {
+  stroke: var(--info);
+}
+
+.medical-analysis-header h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.medical-analysis-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--muted-dark);
+}
+
+.medical-analysis-body {
+  padding: 20px;
+  background: var(--panel);
+}
+
+.analysis-section {
+  margin-bottom: 18px;
+}
+
+.analysis-section:last-child {
+  margin-bottom: 0;
+}
+
+.analysis-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.analysis-section-title svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--primary);
+}
+
+.analysis-content {
+  padding: 14px 16px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--border-dark);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.analysis-content p {
+  margin: 0 0 8px;
+}
+
+.analysis-content p:last-child {
+  margin-bottom: 0;
+}
+
+.analysis-content strong {
+  color: var(--text);
+}
+
+.risk-content {
+  border-left-color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.risk-content strong {
+  color: var(--danger);
+}
+
+.next-step-content {
+  border-left-color: var(--success);
+  background: var(--success-bg);
+}
+
+.next-step-content strong {
+  color: var(--success);
+}
+
+/* Metrics comparison badges in analysis */
+.metrics-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.metric-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.metric-badge.improved {
+  background: var(--success-bg);
+  border-color: #BBF7D0;
+  color: var(--success-dark);
+}
+
+.metric-badge.declined {
+  background: var(--danger-bg);
+  border-color: #FECACA;
+  color: var(--danger);
+}
+
+.metric-badge .diff {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* ========================================
    Responsive Design
    ======================================== */
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .main-workspace {
     grid-template-columns: 1fr;
   }
@@ -1588,6 +1786,12 @@ tr:hover td {
   }
 }
 
+@media (max-width: 1100px) {
+  .results-column {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 900px) {
   .admin-grid {
     grid-template-columns: 1fr;
@@ -1598,7 +1802,7 @@ tr:hover td {
   }
   
   .feature-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
   
   .results-column {

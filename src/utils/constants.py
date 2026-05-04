@@ -92,3 +92,6 @@ MAX_UPLOAD_ROWS = 500000
 
 # New data collection for incremental learning
 NEW_DATA_PATH = PROCESSED_DIR / "new_data.csv"
+
+# Fixed test set for fair comparison across retrain cycles
+FIXED_TEST_DIR = MODELS_DIR / "fixed_test_set"

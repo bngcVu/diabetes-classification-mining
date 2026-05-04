@@ -101,20 +101,33 @@ function renderConditions(stats) {
   const items = [
     {
       ok: conditions.enough_samples,
-      label: "Đã có 500+ mẫu mới",
-      value: `Hiện tại: ${formatInt(conditions.current_samples)} mẫu`,
+      label: `Đủ mẫu để retrain (≥ ${conditions.min_samples_required || 500})`,
+      value: conditions.current_samples >= 0
+        ? `${formatInt(conditions.current_samples)} mẫu có nhãn`
+        : `0 mẫu có nhãn`,
+      warning: !conditions.enough_samples && conditions.current_samples > 0
+        ? `Cần thêm ${formatInt((conditions.min_samples_required || 500) - conditions.current_samples)} mẫu nữa`
+        : null,
     },
     {
       ok: conditions.has_two_classes,
-      label: "Dữ liệu mới đa dạng cả 2 class",
-      value: `Class 0: ${stats.class_dist?.["0"] || 0}, Class 1: ${stats.class_dist?.["1"] || 0}`,
+      label: "Có đủ 2 class (0 và 1)",
+      value: `Class 0: ${formatInt(stats.class_dist?.["0"] || 0)}, Class 1: ${formatInt(stats.class_dist?.["1"] || 0)}`,
+      warning: !conditions.has_two_classes ? "Cần có cả 2 class để train model" : null,
     },
     {
       ok: conditions.days_since_last_retrain_ok,
-      label: "Chưa retrain trong 30 ngày",
-      value: conditions.days_since_last_retrain == null ? "Chưa có lịch sử retrain" : `${conditions.days_since_last_retrain} ngày`,
+      label: `Đã đủ ${conditions.min_days_between_retrain || 30} ngày kể từ retrain cuối`,
+      value: conditions.last_retrain
+        ? `${conditions.days_since_last_retrain || 0} ngày`
+        : "Chưa từng retrain",
+      warning: !conditions.days_since_last_retrain_ok && conditions.days_since_last_retrain !== undefined
+        ? `Cần đợi thêm ${(conditions.min_days_between_retrain || 30) - conditions.days_since_last_retrain} ngày`
+        : null,
     },
   ];
+
+  const canRetrain = conditions.can_retrain;
 
   document.querySelector("#conditionList").innerHTML = items.map((item) => `
     <div class="condition-item ${item.ok ? "ok" : "warn"}">
@@ -122,9 +135,25 @@ function renderConditions(stats) {
       <div>
         <strong>${item.label}</strong>
         <small>${item.value}</small>
+        ${item.warning ? `<small style="color: var(--warning); margin-top: 2px;">${item.warning}</small>` : ""}
       </div>
     </div>
   `).join("");
+
+  // Update retrain button state
+  const retrainBtn = document.querySelector("#retrainBtn");
+  const retrainHint = document.querySelector("#retrainHint");
+
+  if (retrainBtn) {
+    retrainBtn.disabled = !canRetrain;
+    if (canRetrain) {
+      retrainHint.textContent = "Đủ điều kiện. Có thể bắt đầu retrain.";
+      retrainHint.style.color = "var(--success)";
+    } else {
+      retrainHint.textContent = "Chưa đủ điều kiện. Cần thu thập thêm dữ liệu.";
+      retrainHint.style.color = "var(--warning)";
+    }
+  }
 }
 
 function renderStats(stats) {
@@ -225,6 +254,94 @@ function renderComparison(details) {
   document.querySelector("#comparisonPanel").hidden = false;
 }
 
+/**
+ * Render medical recommendation analysis after retrain
+ */
+function renderMedicalAnalysis(details) {
+  const analysis = details.detailed_recommendation;
+  if (!analysis) return;
+
+  const container = document.querySelector("#medicalAnalysis");
+
+  // Get icon SVG based on type
+  const icons = {
+    check: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+    warning: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+    info: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`,
+    alert: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+  };
+
+  // Get section icons
+  const sectionIcons = {
+    reason: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`,
+    risk: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+    next: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>`,
+  };
+
+  // Build metrics badges
+  const metrics = analysis.metrics || {};
+  const metricsBadges = Object.entries(metrics).map(([key, data]) => {
+    const label = METRIC_LABELS[key] || key;
+    const diff = data.diff;
+    const isImproved = diff > 0.001;
+    const isDeclined = diff < -0.001;
+    const diffClass = isImproved ? "improved" : isDeclined ? "declined" : "";
+    const diffSign = diff > 0 ? "+" : "";
+    return `<span class="metric-badge ${diffClass}">${label}: ${diffSign}${(diff * 100).toFixed(2)}%</span>`;
+  }).join("");
+
+  // Build summary stats
+  const summary = analysis.summary || {};
+  const summaryText = `Tổng ${summary.total_metrics || 0} chỉ số: ${summary.improved_count || 0} cải thiện, ${summary.decreased_count || 0} giảm`;
+
+  // Render the analysis panel
+  container.innerHTML = `
+    <div class="medical-analysis">
+      <div class="medical-analysis-header ${analysis.color || "info"}">
+        <div class="icon-wrapper">
+          ${icons[analysis.icon] || icons.info}
+        </div>
+        <div>
+          <h3>${analysis.recommendation_title || analysis.recommendation || "Phân tích y tế"}</h3>
+          <p>${summaryText}</p>
+        </div>
+      </div>
+      <div class="medical-analysis-body">
+        <div class="analysis-section">
+          <div class="analysis-section-title">
+            ${sectionIcons.reason}
+            Lý do khuyến nghị
+          </div>
+          <div class="analysis-content">
+            <p>${analysis.reason || analysis.analysis?.details || "Không có thông tin chi tiết."}</p>
+            ${metricsBadges ? `<div class="metrics-badges">${metricsBadges}</div>` : ""}
+          </div>
+        </div>
+
+        <div class="analysis-section">
+          <div class="analysis-section-title">
+            ${sectionIcons.risk}
+            Rủi ro khi không tuân thủ
+          </div>
+          <div class="analysis-content risk-content">
+            <p>${analysis.risk || "Không có cảnh báo rủi ro."}</p>
+          </div>
+        </div>
+
+        <div class="analysis-section">
+          <div class="analysis-section-title">
+            ${sectionIcons.next}
+            Bước tiếp theo
+          </div>
+          <div class="analysis-content next-step-content">
+            <p>${analysis.next_step || "Tiếp tục giám sát và thu thập thêm dữ liệu."}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 async function loadStats() {
   const stats = await fetchJson(`${API_BASE_URL}/data-stats`);
   renderStats(stats);
@@ -296,7 +413,15 @@ function setupUpload() {
       const formData = new FormData();
       formData.append("file", selectedFile);
       const result = await fetchJson(`${API_BASE_URL}/upload-new-data`, { method: "POST", body: formData });
-      document.querySelector("#uploadMessage").textContent = `Đã thêm ${formatInt(result.rows_added)} dòng vào dữ liệu mới.`;
+
+      // Build message with duplicate info if available
+      let message = "";
+      if (result.duplicate_info && result.duplicate_info.duplicate_rows > 0) {
+        message = `Đã thêm ${formatInt(result.rows_added)} dòng mới. Đã loại bỏ ${formatInt(result.duplicate_info.duplicate_rows)} dòng trùng lặp (${result.duplicate_info.duplicate_percent}%).`;
+      } else {
+        message = `Đã thêm ${formatInt(result.rows_added)} dòng vào dữ liệu mới.`;
+      }
+      document.querySelector("#uploadMessage").textContent = message;
       document.querySelector("#uploadMessage").hidden = false;
       selectedFile = null;
       input.value = "";
@@ -328,6 +453,7 @@ async function pollRetrainStatus() {
 
   const details = await fetchJson(`${API_BASE_URL}/retrain-details`);
   renderComparison(details);
+  renderMedicalAnalysis(details);
 }
 
 function setupRetrain() {
@@ -339,7 +465,21 @@ function setupRetrain() {
     setProgress(10, "Đang bắt đầu");
 
     try {
-      await fetchJson(`${API_BASE_URL}/retrain`, { method: "POST" });
+      const result = await fetchJson(`${API_BASE_URL}/retrain`, { method: "POST" });
+
+      // Hiển thị cảnh báo nếu có
+      if (result.warnings && result.warnings.length > 0) {
+        const warningMsg = result.warnings.join(" | ");
+        document.querySelector("#retrainHint").textContent = warningMsg;
+        document.querySelector("#retrainHint").style.color = "var(--warning)";
+      }
+
+      // Hiển thị stats
+      if (result.stats) {
+        const stats = result.stats;
+        console.log(`[Retrain] New data: ${stats.new_data_rows}, Combined: ${stats.combined_rows}`);
+      }
+
       pollTimer = setInterval(() => {
         pollRetrainStatus().catch((error) => {
           console.error(error);
@@ -351,6 +491,7 @@ function setupRetrain() {
     } catch (error) {
       button.disabled = false;
       document.querySelector("#retrainHint").textContent = error.message;
+      document.querySelector("#retrainHint").style.color = "var(--danger)";
     }
   });
 

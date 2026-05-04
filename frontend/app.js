@@ -60,7 +60,7 @@ const FEATURE_EXPLANATIONS = {
   },
   "BMI": {
     name: "Chỉ số BMI",
-    what: "Từ 10 - 80 (BMI = Cân nặng / Chiều cao²)",
+    what: "Từ 10 - 120 (BMI = Cân nặng / Chiều cao²)",
     description: "BMI = Cân nặng (kg) / Chiều cao² (m²). BMI từ 25-29.9 là thừa cân, từ 30 trở lên là béo phì - đây là yếu tố nguy cơ lớn nhất của tiểu đường type 2.",
     tip: "BMI lý tưởng cho người châu Á: 18.5-22.9. Giảm 5-10% cân nặng có thể giảm 50% nguy cơ tiểu đường."
   },
@@ -212,7 +212,7 @@ const BINARY_FIELDS = [
 ];
 
 const NUMBER_FIELDS = {
-  BMI: { min: 10, max: 80, value: 28, placeholder: "10 - 80" },
+  BMI: { min: 10, max: 120, value: 28, placeholder: "10 - 120" },
   MentHlth: { min: 0, max: 30, value: 0, placeholder: "0 - 30 ngày" },
   PhysHlth: { min: 0, max: 30, value: 0, placeholder: "0 - 30 ngày" },
 };

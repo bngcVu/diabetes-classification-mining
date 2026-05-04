@@ -37,8 +37,16 @@ from src.utils.constants import (
     TARGET_COL,
 )
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend", static_url_path="")
 CORS(app)
+
+@app.route("/")
+def serve_index():
+    return app.send_static_file("index.html")
+
+@app.route("/<path:filename>")
+def serve_static(filename):
+    return app.send_static_file(filename)
 
 
 def load_models():
@@ -536,22 +544,71 @@ def upload_new_data():
         df_cleaned["source"] = "admin_upload"
         df_cleaned["timestamp"] = timestamp
 
+        # Step: Check duplicates with existing new_data.csv
+        duplicate_info = {
+            "total_upload_rows": len(df_cleaned),
+            "duplicate_rows": 0,
+            "unique_rows": len(df_cleaned),
+            "duplicate_percent": 0.0,
+        }
+
+        if NEW_DATA_PATH.exists():
+            df_existing = pd.read_csv(NEW_DATA_PATH)
+            # Get all feature columns plus target for comparison
+            compare_cols = RAW_FEATURE_COLUMNS + [TARGET_COL]
+            existing_compare = df_existing[[c for c in compare_cols if c in df_existing.columns]].copy()
+            new_compare = df_cleaned[[c for c in compare_cols if c in df_cleaned.columns]].copy()
+
+            # Use hash-based duplicate detection
+            def get_hash_key(df, cols):
+                return df[cols].apply(lambda x: hash(tuple(x)), axis=1)
+
+            existing_hashes = get_hash_key(existing_compare, existing_compare.columns)
+            new_hashes = get_hash_key(new_compare, new_compare.columns)
+
+            # Find duplicates
+            is_duplicate = new_hashes.isin(existing_hashes)
+            duplicate_count = int(is_duplicate.sum())
+
+            duplicate_info = {
+                "total_upload_rows": len(df_cleaned),
+                "duplicate_rows": duplicate_count,
+                "unique_rows": len(df_cleaned) - duplicate_count,
+                "duplicate_percent": round(duplicate_count / len(df_cleaned) * 100, 2) if len(df_cleaned) > 0 else 0.0,
+            }
+
+            # Remove duplicates from new data
+            df_cleaned = df_cleaned[~is_duplicate.values].copy()
+
+            if duplicate_count > 0:
+                logger.info(f"[UPLOAD-NEW-DATA] Removed {duplicate_count} duplicate rows from upload")
+
+        PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+
+        # Append unique rows to existing new_data.csv
         if NEW_DATA_PATH.exists():
             df_existing = pd.read_csv(NEW_DATA_PATH)
             df_combined = pd.concat([df_existing, df_cleaned], ignore_index=True)
         else:
             df_combined = df_cleaned
 
-        PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
         df_combined.to_csv(NEW_DATA_PATH, index=False)
+
+        # Build response message
+        if duplicate_info["duplicate_rows"] > 0:
+            message = f"Da them {duplicate_info['unique_rows']} dong moi. Da loai bo {duplicate_info['duplicate_rows']} dong trung lap ({duplicate_info['duplicate_percent']}%)."
+        else:
+            message = f"Da them {duplicate_info['unique_rows']} dong moi vao du lieu."
 
         return jsonify({
             "success": True,
-            "message": "Da upload CSV vao du lieu moi",
-            "rows_added": len(df_cleaned),
+            "message": message,
+            "rows_added": duplicate_info["unique_rows"],
+            "rows_duplicate": duplicate_info["duplicate_rows"],
             "total_new": len(df_combined),
             "validation": {"row_count": len(df_new), "warnings": validation.get("warnings", [])},
             "cleaning_stats": cleaning_stats,
+            "duplicate_info": duplicate_info,
         })
 
     except Exception as exc:
@@ -617,6 +674,7 @@ def get_retrain_details():
         "new_metrics": result.get("new_metrics", {}),
         "comparison_summary": comparison_summary,
         "full_comparison": result.get("comparison", {}),
+        "detailed_recommendation": result.get("detailed_recommendation", {}),
         "message": retrain_status["message"]
     })
 
@@ -631,6 +689,48 @@ def retrain_from_new_data():
     global retrain_status, models, feature_columns
 
     try:
+        # Bước 0: Kiểm tra điều kiện retrain
+        # Lấy thông tin từ data-stats
+        class_dist = {"0": 0, "1": 0}
+        labeled_count = 0
+        total_new = 0
+        last_retrain = None
+        days_since_last_retrain = 999
+
+        if NEW_DATA_PATH.exists():
+            df_stats = pd.read_csv(NEW_DATA_PATH)
+            total_new = len(df_stats)
+            if TARGET_COL in df_stats.columns:
+                labels = df_stats[TARGET_COL].dropna().astype(int)
+                labeled_count = int(len(labels))
+                counts = labels.value_counts().to_dict()
+                class_dist = {"0": int(counts.get(0, 0)), "1": int(counts.get(1, 0))}
+
+        history = get_retrain_history()
+        if history:
+            last_retrain = history[-1]["created_at"]
+            try:
+                from datetime import datetime
+                last_retrain_date = datetime.fromisoformat(last_retrain.replace("Z", "+00:00"))
+                days_since_last_retrain = (datetime.now() - last_retrain_date.replace(tzinfo=None)).days
+            except:
+                days_since_last_retrain = 0
+
+        # Điều kiện retrain
+        enough_samples = labeled_count >= 500
+        has_two_classes = class_dist["0"] > 0 and class_dist["1"] > 0
+        days_ok = days_since_last_retrain >= 30
+        can_retrain = enough_samples and has_two_classes and days_ok
+
+        # Build warnings
+        warnings = []
+        if not enough_samples:
+            warnings.append(f"⚠️ Chưa đủ mẫu: có {labeled_count}/500 mẫu có nhãn")
+        if not has_two_classes:
+            warnings.append(f"⚠️ Thiếu class: class 0={class_dist['0']}, class 1={class_dist['1']}")
+        if not days_ok:
+            warnings.append(f"⚠️ Retrain quá sớm: chỉ {days_since_last_retrain}/30 ngày kể từ lần cuối")
+
         # Bước 1: Kiểm tra new_data.csv
         if not NEW_DATA_PATH.exists():
             return jsonify({
@@ -647,7 +747,7 @@ def retrain_from_new_data():
                 "hint": "Vui long them cot nhan vao new_data.csv hoac su dung /upload-train de upload du lieu co nhan"
             }), 400
 
-        # Kiểm tra số lượng dữ liệu mới
+        # Kiểm tra số lượng dữ liệu mới (tối thiểu)
         if len(df_new) < 10:
             return jsonify({
                 "error": f"Chi co {len(df_new)} dong du lieu moi. Can it nhat 10 dong de retrain.",
@@ -733,12 +833,23 @@ def retrain_from_new_data():
         return jsonify({
             "success": True,
             "message": "Bat dau qua trinh retrain voi du lieu moi",
+            "warnings": warnings,
+            "conditions_met": {
+                "enough_samples": enough_samples,
+                "has_two_classes": has_two_classes,
+                "days_since_last_retrain_ok": days_ok,
+                "can_retrain": can_retrain,
+            },
             "stats": {
                 "new_data_rows": len(df_new),
+                "labeled_rows": labeled_count,
                 "existing_data_rows": len(df_existing),
                 "combined_rows": len(df_combined),
-                "new_unique_rows": duplicate_info.get("unique_new_rows", len(df_new_clean))
+                "new_unique_rows": duplicate_info.get("unique_new_rows", len(df_new_clean)),
+                "duplicate_rows": duplicate_info.get("duplicate_rows", 0),
+                "duplicate_percent": duplicate_info.get("duplicate_percent", 0),
             },
+            "duplicate_info": duplicate_info,
             "status_url": "/retrain-status"
         })
 
@@ -832,17 +943,32 @@ def data_stats():
     history = get_retrain_history()
     last_retrain = history[-1]["created_at"] if history else None
 
+    # Kiểm tra điều kiện retrain
+    days_since_last_retrain = 999  # Mặc định cho phép retrain lần đầu
+    if last_retrain:
+        try:
+            from datetime import datetime
+            last_retrain_date = datetime.fromisoformat(last_retrain.replace("Z", "+00:00"))
+            days_since_last_retrain = (datetime.now() - last_retrain_date.replace(tzinfo=None)).days
+        except:
+            days_since_last_retrain = 0
+
     class_total = class_dist["0"] + class_dist["1"]
     conditions = {
-        "enough_samples": total_new >= 500,
-        "current_samples": total_new,
+        "enough_samples": labeled_count >= 500,  # Cần ít nhất 500 mẫu có nhãn
+        "current_samples": labeled_count,
+        "min_samples_required": 500,
+        "has_new_data": total_new > 0,
         "has_two_classes": class_dist["0"] > 0 and class_dist["1"] > 0,
-        "days_since_last_retrain_ok": True,
+        "days_since_last_retrain_ok": days_since_last_retrain >= 30,
+        "days_since_last_retrain": days_since_last_retrain,
+        "min_days_between_retrain": 30,
+        "can_retrain": (
+            labeled_count >= 500 and
+            class_dist["0"] > 0 and class_dist["1"] > 0 and
+            days_since_last_retrain >= 30
+        ),
     }
-    if last_retrain:
-        days_since = (datetime.now() - datetime.fromisoformat(last_retrain)).days
-        conditions["days_since_last_retrain"] = days_since
-        conditions["days_since_last_retrain_ok"] = days_since >= 30
 
     return jsonify({
         "total_original": total_original,

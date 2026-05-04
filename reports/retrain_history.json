@@ -242,5 +242,53 @@
         }
       }
     }
+  },
+  {
+    "id": 3,
+    "created_at": "2026-05-04T19:17:56.847898",
+    "decision": "kept_old",
+    "new_rows": 580794,
+    "total_rows": 580794,
+    "old_roc_auc": 0.8266075961281361,
+    "new_roc_auc": 0.8282105385191155,
+    "comparison": {
+      "xgboost": {
+        "accuracy": {
+          "old": 0.721342,
+          "new": 0.736203,
+          "diff": 0.014861,
+          "percent_change": 2.06,
+          "improved": true
+        },
+        "precision": {
+          "old": 0.306297,
+          "new": 0.316733,
+          "diff": 0.010436,
+          "percent_change": 3.41,
+          "improved": true
+        },
+        "recall": {
+          "old": 0.790635,
+          "new": 0.771962,
+          "diff": -0.018673,
+          "percent_change": -2.36,
+          "improved": false
+        },
+        "f1": {
+          "old": 0.441539,
+          "new": 0.449173,
+          "diff": 0.007634,
+          "percent_change": 1.73,
+          "improved": true
+        },
+        "roc_auc": {
+          "old": 0.826608,
+          "new": 0.828211,
+          "diff": 0.001603,
+          "percent_change": 0.19,
+          "improved": true
+        }
+      }
+    }
   }
 ]

@@ -1,14 +1,10 @@
 const API_BASE_URL = "http://localhost:5000";
 
 const MODEL_LABELS = {
-  logistic_regression: "Logistic Regression",
-  random_forest: "Random Forest",
   xgboost: "XGBoost",
 };
 
 const MODEL_COLORS = {
-  logistic_regression: "#7c3aed",
-  random_forest: "#2563eb",
   xgboost: "#16a34a",
 };
 
@@ -41,7 +37,7 @@ function formatMetric(value) {
 }
 
 function getModelKeys(metrics) {
-  return ["logistic_regression", "random_forest", "xgboost"].filter((key) => metrics[key]);
+  return ["xgboost"].filter((key) => metrics[key]);
 }
 
 function renderMetricsTable(metrics) {
@@ -280,7 +276,6 @@ function setupImportanceToggle() {
 
 async function init() {
   setupTabs();
-  setupImportanceToggle();
 
   try {
     cachedStats = await loadStats();
@@ -288,7 +283,7 @@ async function init() {
     renderMetricsChart(cachedStats.metrics);
     renderRocChart(cachedStats.curves);
     renderPrChart(cachedStats.curves);
-    renderImportanceChart("random_forest");
+    renderImportanceChart("xgboost");
     renderConfusionMatrices(cachedStats.metrics);
     renderConfusionBarChart(cachedStats.metrics);
   } catch (error) {

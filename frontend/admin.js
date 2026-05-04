@@ -1,8 +1,6 @@
 const API_BASE_URL = "http://localhost:5000";
 
 const MODEL_LABELS = {
-  logistic_regression: "Logistic Regression",
-  random_forest: "Random Forest",
   xgboost: "XGBoost",
 };
 
@@ -13,7 +11,7 @@ const METRIC_LABELS = {
   precision: "Precision",
 };
 
-const MODEL_KEYS = ["logistic_regression", "random_forest", "xgboost"];
+const MODEL_KEYS = ["xgboost"];
 const METRIC_KEYS = ["roc_auc", "f1", "recall", "precision"];
 
 let selectedFile = null;
@@ -153,9 +151,7 @@ function setProgress(progress, message) {
   const steps = [
     ["merge", 10],
     ["preprocess", 25],
-    ["lr", 35],
-    ["rf", 50],
-    ["xgb", 70],
+    ["xgb", 60],
     ["eval", 85],
     ["done", 100],
   ];
@@ -213,12 +209,12 @@ function renderComparison(details) {
   const canDeploy = Boolean(details.can_deploy);
   const summary = canDeploy
     ? [
-        "✓ Cả 3 model đều không giảm ở ROC-AUC, F1 và Recall",
+        "✓ XGBoost không giảm ở ROC-AUC, F1 và Recall",
         "✓ Có cải thiện đủ điều kiện ở chỉ số chính",
         "✓ Có thể cập nhật model mới",
       ]
     : [
-        `⚠ ${blocked.length ? blocked.map((key) => MODEL_LABELS[key]).join(", ") : "Một số model"} chưa đạt điều kiện`,
+        `⚠ XGBoost chưa đạt điều kiện`,
         "⚠ Không khuyến nghị cập nhật nếu Recall, F1 hoặc ROC-AUC giảm",
         "✗ Nên giữ model cũ cho đến khi dữ liệu mới tốt hơn",
       ];

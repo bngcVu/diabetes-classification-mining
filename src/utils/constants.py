@@ -69,15 +69,12 @@ CONTINUOUS_COLS = [
 
 CATEGORICAL_COLS = ["BMI_category"]
 
+# Only XGBoost model for prediction
 MODEL_PATHS = {
-    "logistic_regression": MODELS_DIR / "logistic_regression.joblib",
-    "random_forest": MODELS_DIR / "random_forest.joblib",
     "xgboost": MODELS_DIR / "xgboost.joblib",
 }
 
 MODEL_DISPLAY_NAMES = {
-    "logistic_regression": "Logistic Regression",
-    "random_forest": "Random Forest",
     "xgboost": "XGBoost",
 }
 

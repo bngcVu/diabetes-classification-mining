@@ -26,14 +26,8 @@
             <h2>Nhập thông tin sức khỏe</h2>
           </div>
 
-          <label class="full-row">
-            Mô hình sử dụng
-            <select name="model" id="modelSelect">
-              <option value="xgboost">XGBoost</option>
-              <option value="random_forest">Rừng ngẫu nhiên</option>
-              <option value="logistic_regression">Hồi quy logistic</option>
-            </select>
-          </label>
+          <!-- Model selection hidden - always uses XGBoost -->
+          <input type="hidden" name="model" value="xgboost" />
 
           <div id="featureFields" class="feature-grid"></div>
 

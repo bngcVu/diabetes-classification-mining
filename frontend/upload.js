@@ -133,7 +133,7 @@ predictForm.addEventListener("submit", async (e) => {
 
   const formData = new FormData();
   formData.append("file", selectedPredictFile);
-  formData.append("model", document.getElementById("predictModelSelect").value);
+  formData.append("model", "xgboost");
 
   try {
     const response = await fetch(`${API_BASE_URL}/predict-csv`, {

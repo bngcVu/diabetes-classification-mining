@@ -12,7 +12,7 @@
       <header class="app-header">
         <div>
           <h1>Quản lý dữ liệu & Retrain</h1>
-          <p>Theo dõi dữ liệu mới, huấn luyện lại 3 model và quyết định cập nhật.</p>
+          <p>Theo dõi dữ liệu mới, huấn luyện lại XGBoost và quyết định cập nhật.</p>
         </div>
         <div class="header-actions">
           <span id="apiStatus" class="api-status">Backend: đang kiểm tra...</span>
@@ -108,11 +108,9 @@
           <div id="progressBlock" class="retrain-progress admin-progress" hidden>
             <div class="progress-step" data-step="merge"><span class="step-icon">1</span><span class="step-text">Đang gộp dữ liệu cũ + mới...</span></div>
             <div class="progress-step" data-step="preprocess"><span class="step-icon">2</span><span class="step-text">Đang tiền xử lý dữ liệu...</span></div>
-            <div class="progress-step" data-step="lr"><span class="step-icon">3</span><span class="step-text">Đang train Logistic Regression...</span></div>
-            <div class="progress-step" data-step="rf"><span class="step-icon">4</span><span class="step-text">Đang train Random Forest...</span></div>
-            <div class="progress-step" data-step="xgb"><span class="step-icon">5</span><span class="step-text">Đang train XGBoost...</span></div>
-            <div class="progress-step" data-step="eval"><span class="step-icon">6</span><span class="step-text">Đang đánh giá trên cùng tập test...</span></div>
-            <div class="progress-step" data-step="done"><span class="step-icon">7</span><span class="step-text" id="doneStepText">Hoàn tất</span></div>
+            <div class="progress-step" data-step="xgb"><span class="step-icon">3</span><span class="step-text">Đang train XGBoost...</span></div>
+            <div class="progress-step" data-step="eval"><span class="step-icon">4</span><span class="step-text">Đang đánh giá trên cùng tập test...</span></div>
+            <div class="progress-step" data-step="done"><span class="step-icon">5</span><span class="step-text" id="doneStepText">Hoàn tất</span></div>
           </div>
         </section>
       </section>

@@ -1,14 +1,10 @@
 const API_BASE_URL = "http://localhost:5000";
 
 const MODEL_LABELS = {
-  logistic_regression: "Hồi quy logistic",
-  random_forest: "Rừng ngẫu nhiên",
   xgboost: "XGBoost",
 };
 
 const MODEL_COLORS = {
-  logistic_regression: "#7c3aed",
-  random_forest: "#2563eb",
   xgboost: "#16a34a",
 };
 

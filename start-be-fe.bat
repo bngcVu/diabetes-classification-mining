@@ -12,8 +12,8 @@ start "FE Static" cmd /k "cd /d "%~dp0" && python -m http.server 5500 --director
 echo.
 echo Started:
 echo - Backend:  http://localhost:5000/health
-echo - Frontend: http://localhost:5500/
-echo.
+    echo - Frontend: http://localhost:5500/
+    echo.
 echo Use stop-be-fe.bat to stop both servers.
 
 endlocal

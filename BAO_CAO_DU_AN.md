@@ -1268,9 +1268,9 @@ async function uploadAndRetrain(file) {
 
 ---
 
-## Chương 7: KẾT LUẬN
+## Chương 8: KẾT LUẬN
 
-### 7.1. Tóm tắt kết quả đạt được
+### 8.1. Tóm tắt kết quả đạt được
 
 1. **Xây dựng thành công mô hình dự đoán tiểu đường:**
    - Sử dụng thuật toán XGBoost với độ chính xác cao
@@ -1294,7 +1294,7 @@ async function uploadAndRetrain(file) {
    - Cơ chế upload dữ liệu và huấn luyện lại
    - Lưu lịch sử các lần retrain
 
-### 7.2. Hạn chế của đề tài
+### 8.2. Hạn chế của đề tài
 
 1. **Dữ liệu khảo sát, không phải lâm sàng:**
    - BRFSS là dữ liệu tự báo cáo qua điện thoại, không phải xét nghiệm lâm sàng trực tiếp
@@ -1312,7 +1312,7 @@ async function uploadAndRetrain(file) {
    - Kết quả dự đoán chỉ mang tính chất tham khảo
    - Cần xét nghiệm lâm sàng để chẩn đoán chính xác
 
-### 7.3. Hướng phát triển
+### 8.3. Hướng phát triển
 
 1. **Cải thiện xử lý mất cân bằng:**
    - Thử nghiệm SMOTE (Synthetic Minority Over-sampling Technique)
